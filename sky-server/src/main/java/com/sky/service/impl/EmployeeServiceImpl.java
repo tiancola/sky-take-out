@@ -111,4 +111,44 @@ public class EmployeeServiceImpl implements EmployeeService {
         return new PageResult(total,result);
     }
 
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        //update employee set status = ? where id = ?
+//        Employee employee = new Employee();
+//        employee.setStatus(status);
+//        employee.setId(id);
+        //实体类添加Builder注解后，以上写法可以换为
+        Employee employee = Employee.builder()
+                .status(status)
+                .id(id)
+                .build();
+        //直接将整个employee实体传过去，将update操作统一，不然不同修改业务mapper层sql都得不同
+        employeeMapper.update(employee);
+
+    }
+
+    /**
+     * 调update方法更新员工
+     * @param employeeDTO
+     */
+    @Override
+    public void edit(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO,employee);
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.update(employee);
+    }
+
+    /**
+     * 根据id查员工
+     * @param id
+     * @return
+     */
+    @Override
+    public Employee getById(Long id) {
+        Employee employee = employeeMapper.getById(id);
+        employee.setPassword("***");
+        return employee;
+    }
 }
