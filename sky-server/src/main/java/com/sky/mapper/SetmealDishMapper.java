@@ -13,6 +13,6 @@ import java.util.List;
 @Mapper
 public interface SetmealDishMapper {
 
-    @Select("select setmeal_id from setmeal_dish where ")
+//    @Select("select setmeal_id from setmeal_dish where ")
     List<Long> getSetmealIdsByDishIds(List<Long> dishIds);
 }
